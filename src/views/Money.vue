@@ -1,27 +1,71 @@
 <template>
-        <Layout class-prefix="layout">
-                <NumberPad/>
-                <Types/>
-                <Notes/>
-                <Tags/>
+  <Layout class-prefix="layout">
+    {{recordList}}
+    <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
+    <Types :value.sync="record.type"/>
+    <Notes @update:value="getNotes"/>
+    <Tags :data-source.sync="tags" @update:value="getTags"/>
 
-        </Layout>
+  </Layout>
 </template>
 
 <script lang="ts">
+  import Vue from 'vue';
   import NumberPad from '@/components/Money/NumberPad.vue';
   import Types from '@/components/Money/Types.vue';
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
-  export default {
-    name: 'Money',
-          components: {Tags, Notes, Types, NumberPad},
-  };
+  import {Component, Watch} from 'vue-property-decorator';
+
+  type Record = {
+    tags: string[];
+    notes: string;
+    amount: number;
+    type: string;
+    createDate?: Date;
+  }
+  @Component({
+    components: {Tags, Notes, Types, NumberPad},
+  })
+  export default class Money extends Vue {
+    tags: string[] = ['衣', '食', '住', '行', '麻将'];
+    record: Record = {
+      tags: [], notes: '', amount: 0, type: '+'
+    };
+    recordList: Record[] = JSON.parse(localStorage.getItem('recordList') || '[]');
+
+    getTags(value: string[]) {
+      this.record.tags = value;
+    }
+
+    getNotes(value: string) {
+      this.record.notes = value;
+    }
+
+    getType(value: string) {
+      this.record.type = value;
+    }
+
+    getAmount(value: string) {
+      this.record.amount = parseFloat(value);
+    }
+
+    saveRecordList() {
+      const deepRecord: Record = JSON.parse(JSON.stringify(this.record));// 对record 进行深拷贝
+      deepRecord.createDate = new Date();
+      this.recordList.push(deepRecord);
+    }
+
+    @Watch('recordList')
+    recordChanged() {
+      localStorage.setItem('recordList', JSON.stringify(this.recordList)); // 存入localStorage必须是字符串
+    }
+  }
 </script>
 
 <style lang="scss">
- .layout-content{
-         display: flex;
-         flex-direction: column-reverse;
- }
+  .layout-content {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 </style>
