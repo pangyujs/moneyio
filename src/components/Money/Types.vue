@@ -9,27 +9,41 @@
 </div>
 </template>
 
-<script lang="js">
-  export default {
-    name: 'Types',
-    props: ['xxx'],
-    mounted(){
-      console.log(this.xxx);
-    },
-    data(){
-      return {
-        type: '-' // - 号为支出 + 号为收入
-      }
-    },
-    methods: {
-      selectType(t){
+<script lang="ts">
+
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+  @Component
+  export default class Types extends Vue{
+    type = '-';
+    selectType(t: string){
         if (t !== '-' && t !== '+') {
-          throw new Error("输入的值不正确")
+        throw new Error("输入的值不正确")
         }
         this.type = t;
-      }
+
     }
-  };
+  }
+  // export default {
+  //   name: 'Types',
+  //   props: ['xxx'],
+  //   mounted(){
+  //     console.log(this.xxx);
+  //   },
+  //   data(){
+  //     return {
+  //       type: '-' // - 号为支出 + 号为收入
+  //     }
+  //   },
+  //   methods: {
+  //     selectType(t){
+  //       if (t !== '-' && t !== '+') {
+  //         throw new Error("输入的值不正确")
+  //       }
+  //       this.type = t;
+  //     }
+  //   }
+  // };
 </script>
 
 <style lang="scss" scoped>
