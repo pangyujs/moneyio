@@ -1,15 +1,34 @@
 <template>
  <div>
   <ul class="types">
-    <li class="selected">支出</li>
-    <li>收入</li>
+    <li :class="type === '-' && 'selected'"
+    @click="selectType('-')">支出</li>
+    <li :class="type === '+' && 'selected'"
+    @click="selectType('+')">收入</li>
   </ul>
 </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
   export default {
-    name: 'Types'
+    name: 'Types',
+    props: ['xxx'],
+    mounted(){
+      console.log(this.xxx);
+    },
+    data(){
+      return {
+        type: '-' // - 号为支出 + 号为收入
+      }
+    },
+    methods: {
+      selectType(t){
+        if (t !== '-' && t !== '+') {
+          throw new Error("输入的值不正确")
+        }
+        this.type = t;
+      }
+    }
   };
 </script>
 
@@ -23,6 +42,7 @@
     width: 50%;
     height: 64px;
     display: flex;
+    align-items: center;
     justify-content: center;
     position: relative;
     &.selected::after{
