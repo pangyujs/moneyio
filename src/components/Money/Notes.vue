@@ -1,8 +1,8 @@
 <template>
   <div>
     <label class="notes">
-      <span class="name">{{value}}备注</span>
-      <input :value="value" @input="value = $event.target.value" type="text" placeholder="在这里输入备注">
+      <span class="name">备注</span>
+      <input v-model="value" type="text" placeholder="在这里输入备注">
     </label>
   </div>
 </template>
