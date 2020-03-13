@@ -7,6 +7,7 @@ const recordListModel = {
   const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
   deepRecord.createDate = new Date();
   this.data.push(deepRecord);
+  this.save();
 },
 fetch(){
   this.data = JSON.parse(localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];

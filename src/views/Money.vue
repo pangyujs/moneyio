@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Types :value.sync="record.type"/>
     <FormItem @update:value="getNotes" placeholder="输入点什么吧" note-name="备注"/>
@@ -16,12 +15,6 @@
   import FormItem from '@/components/Money/FormItem.vue';
   import Tags from '@/components/Money/Tags.vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import recordListModel from '@/models/recordListModel';
-  import tagListModel from '@/models/tagListModel';
-
-  const recordList = recordListModel.fetch();
-
-
 
 
   @Component({
@@ -32,7 +25,7 @@
     record: RecordItem = {
       tags: [], notes: '', amount: 0, type: '+'
     };
-    recordList: RecordItem[] =  recordList;
+    recordList: RecordItem[] = window.recordList;
 
     getTags(value: string[]) {
       this.record.tags = value;
@@ -51,12 +44,7 @@
     }
 
     saveRecordList() {
-      recordListModel.create(this.record);
-    }
-
-    @Watch('recordList')
-    recordChanged() {
-     recordListModel.save(); // 存入localStorage必须是字符串
+      window.createRecord(this.record);
     }
   }
 </script>
