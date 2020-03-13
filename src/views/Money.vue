@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Types :value.sync="record.type"/>
     <Notes @update:value="getNotes"/>
@@ -16,23 +15,24 @@
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
   import {Component, Watch} from 'vue-property-decorator';
+  import recordListModel from '@/models/recordListModel';
+  import tagListModel from '@/models/tagListModel';
 
-  type Record = {
-    tags: string[];
-    notes: string;
-    amount: number;
-    type: string;
-    createDate?: Date;
-  }
+  const recordList = recordListModel.fetch();
+
+  const tagList = tagListModel.fetch();
+
+
+
   @Component({
     components: {Tags, Notes, Types, NumberPad},
   })
   export default class Money extends Vue {
-    tags: string[] = ['衣', '食', '住', '行', '麻将'];
-    record: Record = {
+    tags: string[] = tagList;
+    record: RecordItem = {
       tags: [], notes: '', amount: 0, type: '+'
     };
-    recordList: Record[] = JSON.parse(localStorage.getItem('recordList') || '[]');
+    recordList: RecordItem[] =  recordList;
 
     getTags(value: string[]) {
       this.record.tags = value;
@@ -51,14 +51,14 @@
     }
 
     saveRecordList() {
-      const deepRecord: Record = JSON.parse(JSON.stringify(this.record));// 对record 进行深拷贝
+      const deepRecord: RecordItem = recordListModel.clone(this.record);// 对record 进行深拷贝
       deepRecord.createDate = new Date();
       this.recordList.push(deepRecord);
     }
 
     @Watch('recordList')
     recordChanged() {
-      localStorage.setItem('recordList', JSON.stringify(this.recordList)); // 存入localStorage必须是字符串
+     recordListModel.save(this.recordList); // 存入localStorage必须是字符串
     }
   }
 </script>
