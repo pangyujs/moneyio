@@ -42,6 +42,7 @@
   font-size: 14px;
   padding: 16px;
   flex-grow: 1;
+  background: #ffffff;
   display: flex;
   flex-direction: column-reverse;
   > .current{
