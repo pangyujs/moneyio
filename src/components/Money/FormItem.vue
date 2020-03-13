@@ -2,7 +2,7 @@
   <div>
     <label class="fromItem">
       <span class="name">{{this.noteName}}</span>
-      <input :value="value" @input="valueChanged($event.target.value)" type="text" :placeholder="this.placeholder">
+      <input :value="value" @input="valueChanged($event.target.value)" type="text" :placeholder="placeholder">
     </label>
   </div>
 </template>
@@ -15,7 +15,6 @@
     @Prop({default: ''}) readonly value!: string;
     @Prop({required:true}) noteName!: string;
     @Prop() placeholder? : string;
-    @Watch('value')
     valueChanged(value: string ){
       this.$emit('update:value',value);
     }

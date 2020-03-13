@@ -1,13 +1,19 @@
+import clone from '@/lib/clone';
+
 const localStorageKeyName = 'recordList';
 const recordListModel = {
-  clone(data: RecordItem[] | RecordItem){
-    return JSON.parse(JSON.stringify(data));
+  data: [] as RecordItem[],
+  create(record: RecordItem){
+  const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
+  deepRecord.createDate = new Date();
+  this.data.push(deepRecord);
+},
+fetch(){
+  this.data = JSON.parse(localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];
+    return this.data;
   },
-  fetch(){
-    return JSON.parse(localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];
-  },
-  save(data: RecordItem[]){
-    localStorage.setItem(localStorageKeyName,JSON.stringify(data));
+  save(){
+    localStorage.setItem(localStorageKeyName,JSON.stringify(this.data));
   }
 };
 

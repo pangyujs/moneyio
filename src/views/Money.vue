@@ -1,5 +1,6 @@
 <template>
   <Layout class-prefix="layout">
+    {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Types :value.sync="record.type"/>
     <FormItem @update:value="getNotes" placeholder="输入点什么吧" note-name="备注"/>
@@ -28,9 +29,9 @@
     components: {Tags, FormItem: FormItem, Types, NumberPad},
   })
   export default class Money extends Vue {
-    tags: string[] = tagList;
+    tags: {id: string;name: string} = tagList;
     record: RecordItem = {
-      tags: [], notes: '', amount: 0, type: '+'
+      tags: {id:'',name:''}, notes: '', amount: 0, type: '+'
     };
     recordList: RecordItem[] =  recordList;
 
@@ -51,14 +52,12 @@
     }
 
     saveRecordList() {
-      const deepRecord: RecordItem = recordListModel.clone(this.record);// 对record 进行深拷贝
-      deepRecord.createDate = new Date();
-      this.recordList.push(deepRecord);
+      recordListModel.create(this.record);
     }
 
     @Watch('recordList')
     recordChanged() {
-     recordListModel.save(this.recordList); // 存入localStorage必须是字符串
+     recordListModel.save(); // 存入localStorage必须是字符串
     }
   }
 </script>

@@ -30,6 +30,7 @@
       if(name===''){
         alert('标签名不能为空!')
       }else if(this.dataSource){
+        console.log(this.dataSource);
         this.$emit('update:dataSource',[...this.dataSource,name])
       }
     }

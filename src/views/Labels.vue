@@ -34,10 +34,9 @@
           return;
         }
 
-      }else{
+      }else if(name===''){
         alert('标签名不能为空!')
       }
-
     }
   }
 </script>

@@ -22,7 +22,8 @@ const tagListModel: TagListModel = {
     if (nameData.indexOf(name) >= 0) {
       return 'duplicated';
     }
-    this.data.push({id: name,name:name});
+    const idStr: string = Math.random().toString(36).substring(2);
+    this.data.push({id: idStr,name:name});
     this.save();
     return 'success';
   },

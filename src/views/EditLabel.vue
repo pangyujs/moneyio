@@ -47,8 +47,11 @@
     removeTag(){
       if(this.tag){
         console.log(this.tag.id);
-        tagListModel.remove(this.tag.id);
-        this.$router.back();
+        if(tagListModel.remove(this.tag.id)){
+          this.$router.back();
+        }else {
+         alert('删除失败!')
+        }
       }
     }
     goBack(){
