@@ -16,9 +16,8 @@
     @Prop({required:true}) noteName!: string;
     @Prop() placeholder? : string;
     @Watch('value')
-    valueChanged(newValue: string, oldValue: string){
-      this.$emit('update:value',this.value);
-
+    valueChanged(value: string ){
+      this.$emit('update:value',value);
     }
   }
 
