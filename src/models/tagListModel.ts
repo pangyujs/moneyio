@@ -1,16 +1,4 @@
 const localStorageKeyName = 'tagList';
-type tags = {
-  id: string;
-  name: string;
-}
-type TagListModel = {
-  data: tags[];
-  fetch: () => tags[];
-  create: (name: string) => 'success' | 'duplicated'; //联合类型
-  save: () => void;
-  update: (id: string,name: string) => 'success' | 'duplicated' | 'not found';
-  remove: (id: string) => boolean;
-}
 const tagListModel: TagListModel = {
   data: [],
   fetch() {
