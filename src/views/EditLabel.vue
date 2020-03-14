@@ -17,10 +17,10 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import tagListModel from '@/models/tagListModel';
   import FormItem from '@/components/Money/FormItem.vue';
   import Icon from '@/components/Icon.vue';
   import Button from '@/components/Button.vue';
+  import store from '@/store/index2';
 
   @Component({
     components: {Button, FormItem: FormItem, Icon}
@@ -28,20 +28,20 @@
   export default class EditLabel extends Vue {
     tag? : Tag = undefined;
     created() {
-      this.tag=window.findTag(this.$route.params.id);
+      this.tag=store.findTag(this.$route.params.id);
       if (!this.tag) {
         this.$router.replace('/404');
       }
     }
     updateTag(value: string){
       if(this.tag){
-        window.updateTag(this.tag.id,value);
+        store.updateTag(this.tag.id,value);
       }
     }
     removeTag(){
       if(this.tag){
         console.log(this.tag.id);
-        if(window.removeTag(this.tag.id)){
+        if(store.removeTag(this.tag.id)){
           this.$router.back();
         }else {
          alert('删除失败!')
