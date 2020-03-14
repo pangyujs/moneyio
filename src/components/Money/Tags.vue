@@ -4,7 +4,9 @@
       <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
-      <li :class="{selected: selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)" v-for="tag in dataSource" :key="tag.id">{{tag.name}}</li>
+      <li :class="{selected: selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)" v-for="tag in tagList"
+          :key="tag.id">{{tag.name}}
+      </li>
     </ul>
   </div>
 </template>
@@ -12,69 +14,85 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop, Watch} from 'vue-property-decorator';
-  @Component
-  export default class Tags extends Vue{
-    @Prop() dataSource: string[] | undefined;
+  import store from '@/store/index2';
+
+  @Component({
+    computed: {
+      tagList() {
+        return this.$store.state.tagList;
+      }
+    }
+  })
+  export default class Tags extends Vue {
     selectedTags: string[] = [];
-    toggle(tag: string){
+    created(){
+      this.$store.commit('fetchTags');
+    }
+    toggle(tag: string) {
       const result = this.selectedTags.indexOf(tag);
-      if(result>=0){
-        this.selectedTags.splice(result,1);
-      }else{
+      if (result >= 0) {
+        this.selectedTags.splice(result, 1);
+      } else {
         this.selectedTags.push(tag);
       }
-      this.$emit('update:value',this.selectedTags);
-    }
-    createTag(){
-      const name = window.prompt('请输入标签名');
-      if(name===''){
-        alert('标签名不能为空!')
-      }else if(this.dataSource){
-        console.log(this.dataSource);
-        this.$emit('update:dataSource',[...this.dataSource,name])
-      }
+      this.$emit('update:value', this.selectedTags);
     }
 
+    createTag() {
+      const name = window.prompt('请输入标签名');
+      if (name === '') {
+        return alert('标签名不能为空!');
+      } else if (name === null) {
+        return;
+      }
+      this.$store.commit('createTag',name);
+    }
   }
+
 </script>
 
 <style lang="scss" scoped>
-.tags{
-  font-size: 14px;
-  padding: 16px;
-  flex-grow: 1;
-  background: #ffffff;
-  display: flex;
-  flex-direction: column-reverse;
-  > .current{
+  .tags {
+    font-size: 14px;
+    padding: 16px;
+    flex-grow: 1;
+    background: #ffffff;
     display: flex;
-    flex-wrap: wrap;
-    >li{
-      $bg: #d9d9d9;
-      background: $bg;
-      $h: 24px;
-      height: $h;
-      line-height: $h;
-      border-radius: $h/2;
-      padding: 0 16px;
-      margin-right: 12px;
-      margin-top: 4px;
-      &.selected{
-        background: darken($bg,50%);
-        color: #f5f5f5;
+    flex-direction: column-reverse;
+
+    > .current {
+      display: flex;
+      flex-wrap: wrap;
+
+      > li {
+        $bg: #d9d9d9;
+        background: $bg;
+        $h: 24px;
+        height: $h;
+        line-height: $h;
+        border-radius: $h/2;
+        padding: 0 16px;
+        margin-right: 12px;
+        margin-top: 4px;
+
+        &.selected {
+          background: darken($bg, 50%);
+          color: #f5f5f5;
+        }
+      }
+    }
+
+    > .new {
+      padding-top: 16px;
+
+      button {
+        background: transparent;
+        border: none;
+        color: #999;
+        border-bottom: 1px solid;
+        padding: 0 4px;
       }
     }
   }
-  > .new{
-    padding-top: 16px;
-    button{
-      background: transparent;
-      border: none;
-      color: #999;
-      border-bottom: 1px solid;
-      padding: 0 4px;
-    }
-  }
-}
 
 </style>

@@ -1,9 +1,10 @@
 <template>
   <Layout class-prefix="layout">
+    {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Types :value.sync="record.type"/>
     <FormItem @update:value="getNotes" placeholder="输入点什么吧" note-name="备注"/>
-    <Tags :data-source.sync="tags" @update:value="getTags"/>
+    <Tags />
 
   </Layout>
 </template>
@@ -15,18 +16,23 @@
   import FormItem from '@/components/Money/FormItem.vue';
   import Tags from '@/components/Money/Tags.vue';
   import {Component} from 'vue-property-decorator';
-  import store from '@/store/index2';
 
 
   @Component({
     components: {Tags, FormItem: FormItem, Types, NumberPad},
+    computed: {
+      recordList(){
+          return this.$store.state.recordList;
+      }
+    }
   })
   export default class Money extends Vue {
-    tags = store.tagList;
     record: RecordItem = {
       tags: [], notes: '', amount: 0, type: '+'
     };
-    recordList: RecordItem[] = store.recordList;
+    created(){
+      this.$store.commit('fetchRecords');
+    }
 
     getTags(value: string[]) {
       this.record.tags = value;
@@ -36,16 +42,9 @@
       this.record.notes = value;
     }
 
-    getType(value: string) {
-      this.record.type = value;
-    }
-
-    getAmount(value: string) {
-      this.record.amount = parseFloat(value);
-    }
 
     saveRecordList() {
-      store.createRecord(this.record);
+      this.$store.commit('createRecords',this.record);
     }
   }
 </script>
