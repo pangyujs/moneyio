@@ -21,13 +21,11 @@
   import store from '@/store/index2';
   @Component({
     components: {Button},
-    computed: {
-      tags(){
-        return this.$store.state.tagList;
-      }
-    }
   })
   export default class Labels extends Vue {
+    get tags(){
+      return this.$store.state.tagList;
+    }
     create(){
       this.$store.commit('fetchTags');
     }
