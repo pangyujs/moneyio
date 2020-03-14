@@ -26,8 +26,9 @@
     get tags(){
       return this.$store.state.tagList;
     }
-    create(){
+    created(){
       this.$store.commit('fetchTags');
+      console.log(this.tags);
     }
     createTag(){
       const name = window.prompt('请输入标签名');
