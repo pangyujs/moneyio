@@ -6,7 +6,7 @@
       <span class="rightIcon"/>
     </div>
     <div class="form-wrapper">
-      <FormItem :value="tag.name" @update:value="updateTag" note-name="标签" placeholder="请输入标签" />
+      <FormItem :value="currentTag.name" @update:value="updateTag" note-name="标签" placeholder="请输入标签" />
     </div>
     <div class="button-wrapper">
       <Button @click="removeTag">删除标签</Button>
@@ -20,31 +20,30 @@
   import FormItem from '@/components/Money/FormItem.vue';
   import Icon from '@/components/Icon.vue';
   import Button from '@/components/Button.vue';
-  import store from '@/store/index2';
 
   @Component({
     components: {Button, FormItem: FormItem, Icon},
   })
   export default class EditLabel extends Vue {
-    get tag(){
+    get currentTag(){
       return this.$store.state.currentTag;
     }
     created() {
       const id = this.$route.params.id;
       this.$store.commit('fetchTags');
       this.$store.commit('setCurrentTag', id);
-      if (!this.tag) {
+      if (!this.currentTag) {
         this.$router.replace('/404');
       }
     }
     updateTag(value: string){
-      if(this.tag){
-        this.$store.commit('updateTag',{id:this.tag.id,name:value});
+      if(this.currentTag){
+        this.$store.commit('updateTag',{id:this.currentTag.id,name:value});
       }
     }
     removeTag(){
-      if(this.tag){
-        this.$store.commit('removeTag',this.tag.id);
+      if(this.currentTag){
+        this.$store.commit('removeTag',this.currentTag.id);
       }
     }
     goBack(){
