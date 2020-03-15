@@ -5,7 +5,7 @@
     <div>
       <ol>
         <li v-for="(group,index) in result" :key="index">
-          <h3 class="title">{{beautify(group.title)}}</h3>
+          <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
           <ol>
             <li class="record" v-for="item in group.items" :key="item.id">
               <span>{{tagString(item.tags)}}</span>
@@ -50,27 +50,32 @@
         return '昨天';
       } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
         return '前天';
-      } else if(day.isSame(now,'year')){
+      } else if (day.isSame(now, 'year')) {
         return day.format('M月DD日');
-      }else{
+      } else {
         return day.format('YYYY年MM月DD日');
       }
     }
 
     get result() {
       const {recordList} = this;
-      const newList = clone(recordList).sort((a,b)=>dayjs(b.createDate).valueOf()-dayjs(a.createDate).valueOf());
-      const groupedList = [{title: dayjs(newList[0].createDate).format('YYYY-MM-DD'),items: [newList[0]]}];
-      for(let i=1;i<newList.length;i++){
+      const array = recordList.filter(r => r.type === this.type);
+      if (array.length === 0) {return [];}
+      type RResult = {title: string; total?: number;items: RecordItem[]}[];
+      const newList = clone(recordList).filter(r => r.type === this.type).sort((a, b) => dayjs(b.createDate).valueOf() - dayjs(a.createDate).valueOf());
+      const groupedList: RResult = [{title: dayjs(newList[0].createDate).format('YYYY-MM-DD'), items: [newList[0]]}];
+      for (let i = 1; i < newList.length; i++) {
         const current = newList[i];
-        const last = groupedList[groupedList.length-1];
-        if(dayjs(last.title).isSame(dayjs(current.createDate),'day')){
-          last.items.push(current)
-        }else{
-          groupedList.push({title:dayjs(current.createDate).format('YYYY-MM-DD'),items: [current]});
+        const last = groupedList[groupedList.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createDate), 'day')) {
+          last.items.push(current);
+        } else {
+          groupedList.push({title: dayjs(current.createDate).format('YYYY-MM-DD'), items: [current]});
         }
       }
-      console.log(groupedList);
+      groupedList.map(group=>{
+        group.total = group.items.reduce((sum,cur)=>sum+ cur.amount,0);
+      });
       return groupedList;
     }
 
