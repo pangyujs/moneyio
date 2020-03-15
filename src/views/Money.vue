@@ -3,7 +3,7 @@
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
     <FormItem @update:value="getNotes" placeholder="输入点什么吧" note-name="备注"/>
-    <Tags @update:value="getTags" />
+    <Tags/>
 
   </Layout>
 </template>
@@ -33,9 +33,6 @@
       this.$store.commit('fetchRecords');
     }
 
-    getTags(value: string[]) {
-      this.record.tags = value;
-    }
 
     getNotes(value: string) {
       this.record.notes = value;

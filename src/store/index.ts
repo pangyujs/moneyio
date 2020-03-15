@@ -5,11 +5,6 @@ import Tags from '@/components/Money/Tags.vue';
 import router from '@/router';
 
 Vue.use(Vuex);
-type RootState = {
-  recordList: RecordItem[];
-  tagList: Tag[];
-  currentTag?: Tag;
-}
 
 const store = new Vuex.Store({
   state: {
@@ -23,7 +18,7 @@ const store = new Vuex.Store({
     },
     createRecords(state, record) {
       const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
-      deepRecord.createDate = new Date();
+      deepRecord.createDate = new Date().toISOString();
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
     },
