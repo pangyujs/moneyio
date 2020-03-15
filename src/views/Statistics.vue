@@ -3,7 +3,7 @@
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
     <Tabs :data-source="intervalList" class-prefix="interval" :value.sync="interval"/>
     <div>
-      <ol>
+      <ol v-if="result.length>0">
         <li v-for="(group,index) in result" :key="index">
           <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
           <ol>
@@ -15,6 +15,9 @@
           </ol>
         </li>
       </ol>
+      <div v-else class="noResult">
+        目前没有相关记录
+      </div>
     </div>
   </Layout>
 </template>
@@ -92,6 +95,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .noResult{
+    text-align: center;
+    padding: 20px 20px;
+  }
   ::v-deep {
     .type-tabs-item {
       background: #ffffff;

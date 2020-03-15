@@ -21,6 +21,7 @@ const store = new Vuex.Store({
       deepRecord.createDate = new Date().toISOString();
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
+      alert('记账成功!');
     },
     saveRecords(state) {
       localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -29,12 +30,12 @@ const store = new Vuex.Store({
       state.currentTag = state.tagList.filter(item => item.id === id)[0];
     },
     fetchTags(state) {
-      state.tagList = JSON.parse(localStorage.getItem('tagList') || '[]');
+        state.tagList = JSON.parse(localStorage.getItem('tagList') || '[]');
     },
     createTag(state, name) {
       const nameData = state.tagList.map(item => item.name);
       if (nameData.indexOf(name) >= 0) {
-        alert('文件名不能重复!');
+        alert('标签名不能重复!');
       }
       const idStr: string = Math.random().toString(36).substring(2);
       state.tagList.push({id: idStr, name: name});

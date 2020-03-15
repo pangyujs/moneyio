@@ -2,8 +2,8 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
-    <FormItem @update:value="getNotes" placeholder="输入点什么吧" note-name="备注"/>
-    <Tags/>
+    <FormItem @update:value="getNotes" :value.sync="record.notes" placeholder="输入点什么吧" note-name="备注"/>
+    <Tags @update:value="getTags"/>
 
   </Layout>
 </template>
@@ -27,7 +27,7 @@
       return this.$store.state.recordList;
     }
     record: RecordItem = {
-      tags: [], notes: '', amount: 0, type: '+'
+      tags: [], notes: '', amount: 0, type: '-'
     };
     created(){
       this.$store.commit('fetchRecords');
@@ -38,9 +38,13 @@
       this.record.notes = value;
     }
 
+    getTags(value: string[]) {
+      this.record.tags = value;
+    }
 
     saveRecordList() {
       this.$store.commit('createRecords',this.record);
+      this.record.notes = '';
     }
   }
 </script>
