@@ -4,8 +4,8 @@
     <Tabs :data-source="intervalList" class-prefix="interval" :value.sync="interval"/>
     <div>
       <ol>
-        <li v-for="(group,index) in result" :key="index" >
-          <h3 class="title">{{group.title}}</h3>
+        <li v-for="(group,index) in result" :key="index">
+          <h3 class="title">{{beautify(group.title)}}</h3>
           <ol>
             <li class="record" v-for="item in group.items" :key="item.id">
               <span>{{tagString(item.tags)}}</span>
@@ -25,31 +25,59 @@
   import Tabs from '@/components/Tabs.vue';
   import intervalList from '@/constants/intervalList';
   import typeList from '@/constants/typeList';
+  import dayjs from 'dayjs';
+  import clone from '@/lib/clone';
+
 
   @Component({
     components: {Tabs}
   })
   export default class Statistics extends Vue {
-    tagString(tags: Tag[]){
-      return tags.length === 0? '无' : tags.join(',');
+    tagString(tags: Tag[]) {
+      return tags.length === 0 ? '无' : tags.join(',');
     }
-    get recordList(){
+
+    get recordList() {
       return (this.$store.state as RootState).recordList;
     }
-    get result(){
-      const {recordList} = this;
-      type HashTableValue = {title: string; items: RecordItem[]};
-      const hashTable: {[key: string]: HashTableValue } = {};
-      for(let i=0;i< recordList.length;i++){
-        const [date,time] = recordList[i].createDate!.split('T');
-        hashTable[date]=hashTable[date] || {title:date,items:[]};// hashTable 日期键如果存在就是本身,如果不存在就为空数组
-        hashTable[date].items.push(recordList[i]);
+
+    beautify(string: string) {
+      const day = dayjs(string);
+      const now = dayjs();
+      if (day.isSame(now, 'day')) {
+        return '今天';
+      } else if (day.isSame(now.subtract(1, 'day'), 'day')) {
+        return '昨天';
+      } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
+        return '前天';
+      } else if(day.isSame(now,'year')){
+        return day.format('M月DD日');
+      }else{
+        return day.format('YYYY年MM月DD日');
       }
-      return hashTable;
     }
-    beforeCreate(){
+
+    get result() {
+      const {recordList} = this;
+      const newList = clone(recordList).sort((a,b)=>dayjs(b.createDate).valueOf()-dayjs(a.createDate).valueOf());
+      const groupedList = [{title: dayjs(newList[0].createDate).format('YYYY-MM-DD'),items: [newList[0]]}];
+      for(let i=1;i<newList.length;i++){
+        const current = newList[i];
+        const last = groupedList[groupedList.length-1];
+        if(dayjs(last.title).isSame(dayjs(current.createDate),'day')){
+          last.items.push(current)
+        }else{
+          groupedList.push({title:dayjs(current.createDate).format('YYYY-MM-DD'),items: [current]});
+        }
+      }
+      console.log(groupedList);
+      return groupedList;
+    }
+
+    beforeCreate() {
       this.$store.commit('fetchRecords');
     }
+
     type = '-';
     interval = 'day';
     intervalList = intervalList;
@@ -62,6 +90,7 @@
   ::v-deep {
     .type-tabs-item {
       background: #ffffff;
+
       &.selected {
         background: #c4c4c4;
 
@@ -70,25 +99,30 @@
         }
       }
     }
+
     .interval-tabs-item {
       height: 48px;
     }
   }
-  %item{
+
+  %item {
     padding: 8px 16px;
     line-height: 24px;
     display: flex;
     justify-content: space-between;
     align-content: center;
   }
-  .title{
+
+  .title {
     @extend %item;
   }
-  .record{
+
+  .record {
     background: #ffffff;
     @extend %item;
   }
-  .notes{
+
+  .notes {
     margin-right: auto;
     margin-left: 16px;
     color: #999999;
