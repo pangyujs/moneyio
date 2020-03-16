@@ -5,7 +5,9 @@
     </div>
     <ul class="current">
       <li :class="{selected: selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)" v-for="tag in tagList"
-          :key="tag.id">{{tag.name}}
+          :key="tag.id">
+        <Icon :name="tag.iconName"/>
+        {{tag.name}}
       </li>
     </ul>
   </div>
@@ -24,6 +26,7 @@
     selectedTags: string[] = [];
     created(){
       this.$store.commit('fetchTags');
+      console.log(this.tagList);
     }
     toggle(tag: string) {
       const result = this.selectedTags.indexOf(tag);
@@ -58,21 +61,32 @@
     flex-direction: column-reverse;
 
     > .current {
+      flex: 1;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      width: auto;
+      padding-bottom: 10px;
 
       > li {
+        .icon{
+          min-width: 35px;
+          min-height: 35px;
+          border-radius: 50%;
+          font-size: 15px;
+          background: #d9d9d9;
+          padding: 5px;
+          /*border: 1px solid red;*/
+        }
         $bg: #d9d9d9;
-        background: $bg;
-        $h: 24px;
-        height: $h;
-        line-height: $h;
-        border-radius: $h/2;
-        padding: 0 16px;
-        margin-right: 12px;
-        margin-top: 4px;
-
-        &.selected {
+        padding: 10px 22px 10px 22px;
+        /*border: 1px solid green;*/
+        display: flex;
+        align-content: center;
+        text-align: center;
+        flex-direction: column;
+        font-size: 12px;
+        &.selected .icon{
           background: darken($bg, 50%);
           color: #f5f5f5;
         }

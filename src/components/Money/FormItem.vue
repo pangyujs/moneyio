@@ -1,8 +1,9 @@
 <template>
   <div>
     <label class="fromItem">
-      <span class="name">{{this.noteName}}</span>
+      <span class="name">{{this.noteName}}:</span>
       <input :value="value" @input="valueChanged($event.target.value)" type="text" :placeholder="placeholder">
+      <span class="name date">日期:</span><input type="date">
     </label>
   </div>
 </template>
@@ -24,19 +25,25 @@
 
 <style lang="scss" scoped>
 .fromItem{
-  font-size: 14px;
-  padding-left: 16px;
   display: flex;
   align-items: center;
+  justify-content:space-around;
+  min-height: 50px;
+  font-size: 11px;
+  /*font-size: 14px;*/
+  padding: 0 16px;
+  /*display: flex;*/
+  /*align-items: center;*/
   .name{
-    padding-right: 10px;
+    flex-grow: 1;
+    /*padding-right: 10px;*/
+    /*margin-right: 10px;*/
   }
   input{
-    height: 64px;
-    flex-grow: 1;
+    /*height: 64px;*/
+    flex-shrink: 1;
     background: transparent;
     border: none;
-    padding-right: 16px;
   }
 }
 </style>

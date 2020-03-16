@@ -30,7 +30,35 @@ const store = new Vuex.Store({
       state.currentTag = state.tagList.filter(item => item.id === id)[0];
     },
     fetchTags(state) {
-        state.tagList = JSON.parse(localStorage.getItem('tagList') || '[]');
+        state.tagList = JSON.parse(localStorage.getItem('tagList') || `
+            [
+              {"id": "e46mmdwgnf7",
+              "name": "购物",
+              "iconName": "shopping"},
+              {"id": "zu427xlf3h",
+              "name": "娱乐",
+              "iconName": "happy"},
+              {"id": "k2a3cxa9kvl",
+              "name": "餐饮",
+              "iconName": "eat"},
+              {"id": "1bejsj3xh49",
+              "name": "通信",
+              "iconName": "phone"},
+              {"id": "ipshdvwgr3",
+              "name": "宠物",
+              "iconName": "pet"},
+              {"id": "nkrs864gck",
+              "name": "交通",
+              "iconName": "transportation"},
+              {"id": "gj26q6tsyaf",
+              "name": "学习",
+              "iconName": "study"},
+              {"id": "nxvirwsgdub",
+              "name": "旅行",
+              "iconName": "travel"}
+            ]
+        `);
+      console.log(state.tagList);
     },
     createTag(state, name) {
       const nameData = state.tagList.map(item => item.name);

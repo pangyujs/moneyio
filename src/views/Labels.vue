@@ -2,7 +2,8 @@
   <Layout>
     <div class="tags">
       <router-link :to="`/labels/edit/${tag.id}`" class="tag" v-for="tag in tags" :key="tag.id">
-        <span>{{tag.name}}</span>
+
+        <span><Icon class="tagIcon" :name="tag.iconName"/>{{tag.name}}</span>
         <Icon name="right"/>
       </router-link>
     </div>
@@ -55,7 +56,12 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid #e6e6e6;
-
+      .tagIcon{
+        border-radius: 50%;
+        background: #d9d9d9;
+        margin-right: 5px;
+        /*border: 1px solid red;*/
+      }
       svg {
         width: 18px;
         height: 18px;
@@ -68,7 +74,7 @@
   }
 
   .createTag{
-    background: #767676;
+    background: #56C5B2;
     color: #ffffff;
     border-radius: 4px;
     border: none;
