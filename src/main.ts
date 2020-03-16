@@ -6,6 +6,8 @@ import store from './store';
 import Nav from '@/components/Nav.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
+import Echart from 'echarts';
+Vue.prototype.$echarts = Echart;
 
 Vue.config.productionTip = false;
 Vue.component('Nav', Nav);

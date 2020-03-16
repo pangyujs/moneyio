@@ -1,10 +1,10 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="createTag">新增标签</button>
+      <router-link class="addLabel" to="/add">新增标签</router-link>
     </div>
     <ul class="current">
-      <li :class="{selected: selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)" v-for="tag in tagList"
+      <li :class="{selected: selectedTags.indexOf(tag)>=0}" @click="toggle(tag)" v-for="tag in tagList"
           :key="tag.id">
         <Icon :name="tag.iconName"/>
         {{tag.name}}
@@ -15,20 +15,17 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop, Watch} from 'vue-property-decorator';
-  import store from '@/store/index2';
-
+  import {Component} from 'vue-property-decorator';
   @Component
   export default class Tags extends Vue {
     get tagList(){
       return this.$store.state.tagList;
     }
-    selectedTags: string[] = [];
+    selectedTags: Tag[] = [];
     created(){
       this.$store.commit('fetchTags');
-      console.log(this.tagList);
     }
-    toggle(tag: string) {
+    toggle(tag: Tag) {
       const result = this.selectedTags.indexOf(tag);
       if (result >= 0) {
         this.selectedTags.splice(result, 1);
@@ -36,16 +33,6 @@
         this.selectedTags.push(tag);
       }
       this.$emit('update:value', this.selectedTags);
-    }
-
-    createTag() {
-      const name = window.prompt('请输入标签名');
-      if (name === '') {
-        return alert('标签名不能为空!');
-      } else if (name === null) {
-        return;
-      }
-      this.$store.commit('createTag',name);
     }
   }
 
@@ -96,12 +83,11 @@
     > .new {
       padding-top: 16px;
 
-      button {
+      .addLabel {
         background: transparent;
         border: none;
         color: #999;
         border-bottom: 1px solid;
-        padding: 0 4px;
       }
     }
   }

@@ -29,6 +29,7 @@
         flex-direction: row;
         font-size: 12px;
         >.item{
+            color: $color-font;
             padding: 2px 0;
             width: 33.33333%;
             display: flex;

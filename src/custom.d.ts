@@ -1,19 +1,20 @@
 type RecordItem = {
-  tags: string[];
+  tags: Tag[];
   notes: string;
   amount: number;
   type: string;
-  createDate?: string;
+  createDate: string;
 }
 type RootState = {
   recordList: RecordItem[];
+  createError: string;
   tagList: Tag[];
   currentTag?: Tag;
 }
 type Tag = {
   id: string;
   name: string;
-  iconName?: string;
+  iconName: string;
 }
 type TagListModel = {
   data: Tag[];

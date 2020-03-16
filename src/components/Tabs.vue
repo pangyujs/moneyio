@@ -4,7 +4,7 @@
         @click="select(tab)"
         class="tabs-item"
         :class="liClass(tab)"
-    >{{tab.text}}
+    ><h3>{{tab.text}}</h3>
     </li>
   </ul>
 </template>
@@ -33,22 +33,36 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~@/assets/styles/helper.scss';
   .tabs {
-    background: #c4c4c4;
+    background: $color-height;
     display: flex;
     text-align: center;
-    font-size: 24px;
+    font-size: 16px;
+    font-weight: normal;
 
-    &-item  {
+    &-item {
       width: 50%;
-      height: 64px;
+      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+      color: #ffffff;
 
-      &.selected{
-        background:  #ffffff;
+      &.selected {
+        &::after {
+          content: '';
+          background: $color-height;
+          height: 2px;
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+
+        background: #ffffff;
+        color: $color-font;
       }
     }
   }

@@ -1,16 +1,18 @@
 <template>
   <Layout>
+    <div class="labelsManager">
+      <div class="empty"></div>
+      <h3>标签管理</h3>
+      <router-link class="addLabel" to="/add">
+        <Icon name="add"/>
+      </router-link>
+    </div>
     <div class="tags">
       <router-link :to="`/labels/edit/${tag.id}`" class="tag" v-for="tag in tags" :key="tag.id">
 
         <span><Icon class="tagIcon" :name="tag.iconName"/>{{tag.name}}</span>
         <Icon name="right"/>
       </router-link>
-    </div>
-    <div class="createTag-wrapper">
-      <Button @click="createTag" class="createTag">
-       新增标签
-      </Button>
     </div>
   </Layout>
 </template>
@@ -19,7 +21,6 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Button from '@/components/Button.vue';
-  import store from '@/store/index2';
   @Component({
     components: {Button},
   })
@@ -44,7 +45,28 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .labelsManager{
+    height: 58px;
+    text-align:center;
+    display: flex;
+    min-width: 100vw;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    background: #56C5B2;
+    font-weight: normal;
+    color: #ffffff;
+    > .addLabel{
+      padding-right: 13px;
+      font-size: 24px;
+      /*font-size: 25px;*/
+    }
+    > .empty{
+      padding-right: 15px;
+      width: 25px;
+      height: 25px;
+    }
+  }
   .tags {
     background: #ffffff;
     font-size: 16px;

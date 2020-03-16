@@ -1,14 +1,18 @@
 <template>
   <Layout>
-    <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
+    <div class="statisticName">
+      <h3>统计</h3>
+    </div>
     <Tabs :data-source="intervalList" class-prefix="interval" :value.sync="interval"/>
+    <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
+<!--    <div id="myEcharts" style="min-height: 40vh;"></div>-->
     <div>
       <ol v-if="result.length>0">
         <li v-for="(group,index) in result" :key="index">
           <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
           <ol>
             <li class="record" v-for="item in group.items" :key="item.id">
-              <span>{{tagString(item.tags)}}</span>
+              <span class="tag" :key="tag.id" v-for="tag in item.tags"><Icon :name="tag.iconName"/><span class="labelName">{{tag.name}}</span></span>
               <span class="notes">{{item.notes}}</span>
               <span>￥{{item.amount}}</span>
             </li>
@@ -30,15 +34,31 @@
   import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
-
+  import "echarts/lib/chart/bar";
 
   @Component({
     components: {Tabs}
   })
   export default class Statistics extends Vue {
-    tagString(tags: Tag[]) {
-      return tags.length === 0 ? '无' : tags.join(',');
-    }
+    // $echarts: any;
+    // options = {
+    //   xAxis: {
+    //     type: 'category',
+    //     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    //   },
+    //   yAxis: {
+    //     type: 'value'
+    //   },
+    //   series: [{
+    //     data: [820, 932, 901, 934, 1290, 1330, 1320],
+    //     type: 'line'
+    //   }]
+    // };
+    // mounted() {
+    //   const ele = document.getElementById('myEcharts');
+    //   const chart: any = this.$echarts.init(ele);
+    //   chart.setOption(this.options);
+    // }
 
     get recordList() {
       return (this.$store.state as RootState).recordList;
@@ -95,6 +115,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .statisticName{
+      text-align:center;
+      min-width: 100vw;
+    padding: 15px 0;
+      background: #56C5B2;
+      font-weight: normal;
+      color: #ffffff;
+  }
   .noResult{
     text-align: center;
     padding: 20px 20px;
@@ -122,6 +150,7 @@
     line-height: 24px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     align-content: center;
   }
 
@@ -132,11 +161,20 @@
   .record {
     background: #ffffff;
     @extend %item;
+    >.notes {
+      margin-right: auto;
+      margin-left: 16px;
+      color: #999999;
+    }
+    >.tag{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .labelName{
+        padding: 0 5px;
+      }
+    }
   }
 
-  .notes {
-    margin-right: auto;
-    margin-left: 16px;
-    color: #999999;
-  }
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
-    <FormItem @update:value="getNotes" :value.sync="record.notes" placeholder="输入点什么吧" note-name="备注"/>
+    <FormItem  :value.sync="record.notes" :dateValue.sync="record.createDate" placeholder="输入点什么吧" note-name="备注"/>
     <Tags @update:value="getTags"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
   </Layout>
@@ -18,30 +18,33 @@
 
 
   @Component({
-    components: {Tabs, Tags, FormItem: FormItem, NumberPad},
+    components: {Tabs, Tags,FormItem, NumberPad},
   })
   export default class Money extends Vue {
     typeList= typeList;
-    get recordList(){
-      return this.$store.state.recordList;
-    }
     record: RecordItem = {
-      tags: [], notes: '', amount: 0, type: '-'
+      tags: [], notes: '', amount: 0, type: '-', createDate: ''
     };
     created(){
-      this.$store.commit('fetchRecords');
+      const now = new Date();
+      const day = ("0" + now.getDate()).slice(-2);
+      const month = ("0" + (now.getMonth() + 1)).slice(-2);
+      this.record.createDate = now.getFullYear() + "-" + (month) + "-" + (day);
     }
 
-
-    getNotes(value: string) {
-      this.record.notes = value;
-    }
-
-    getTags(value: string[]) {
+    getTags(value: Tag[]) {
       this.record.tags = value;
     }
 
     saveRecordList() {
+      if(this.record.tags.length===-1){
+        return alert('请至少选择一个标签!');
+      }else if(this.record.tags.length>2){
+        return alert('最多添加三个标签');
+      }
+      if(this.record.amount === 0){
+        return alert('请输入金额!')
+      }
       this.$store.commit('createRecords',this.record);
       this.record.notes = '';
     }

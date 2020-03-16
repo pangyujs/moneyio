@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
-import Tags from '@/components/Money/Tags.vue';
 import router from '@/router';
 
 Vue.use(Vuex);
@@ -9,6 +8,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     recordList: [] as RecordItem[],
+    createError: 'none',
     tagList: [] as Tag[],
     currentTag: undefined
   } as RootState,
@@ -18,7 +18,6 @@ const store = new Vuex.Store({
     },
     createRecords(state, record) {
       const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
-      deepRecord.createDate = new Date().toISOString();
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
       alert('记账成功!');
@@ -58,15 +57,15 @@ const store = new Vuex.Store({
               "iconName": "travel"}
             ]
         `);
-      console.log(state.tagList);
     },
-    createTag(state, name) {
+    createTag(state, tag: Tag) {
       const nameData = state.tagList.map(item => item.name);
-      if (nameData.indexOf(name) >= 0) {
-        alert('标签名不能重复!');
+      if (nameData.indexOf(tag.name) >= 0) {
+        state.createError = 'failed';
+        return alert('标签名不能重复!');
       }
-      const idStr: string = Math.random().toString(36).substring(2);
-      state.tagList.push({id: idStr, name: name});
+      tag.id = Math.random().toString(36).substring(2);
+      state.tagList.unshift(tag);
       store.commit('saveTags');
     },
     saveTags(state) {
