@@ -7,7 +7,7 @@
       <li :class="{selected: selectedTags.indexOf(tag)>=0}" @click="toggle(tag)" v-for="tag in tagList"
           :key="tag.id">
         <Icon :name="tag.iconName"/>
-        {{tag.name}}
+        <span>{{tag.name}}</span>
       </li>
     </ul>
   </div>
@@ -41,7 +41,8 @@
 <style lang="scss" scoped>
   .tags {
     font-size: 14px;
-    padding: 16px;
+    padding-left: 16px;
+    padding-bottom: 10px;
     flex-grow: 1;
     background: #ffffff;
     display: flex;
@@ -50,10 +51,10 @@
     > .current {
       flex: 1;
       display: flex;
+      align-items: center;
       flex-wrap: nowrap;
       overflow-x: auto;
       width: auto;
-      padding-bottom: 10px;
 
       > li {
         .icon{
@@ -65,11 +66,15 @@
           padding: 5px;
           /*border: 1px solid red;*/
         }
+        span{
+          min-width: 50px;
+        }
         $bg: #d9d9d9;
-        padding: 10px 22px 10px 22px;
+        padding: 10px 15px 10px 15px;
         /*border: 1px solid green;*/
         display: flex;
         align-content: center;
+        align-items: center;
         text-align: center;
         flex-direction: column;
         font-size: 12px;
@@ -81,7 +86,7 @@
     }
 
     > .new {
-      padding-top: 16px;
+      padding-top: 10px;
 
       .addLabel {
         background: transparent;

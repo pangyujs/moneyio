@@ -37,13 +37,13 @@
     }
 
     saveRecordList() {
-      if(this.record.tags.length===-1){
-        return alert('请至少选择一个标签!');
+      if(this.record.tags.length===0){
+        return alert('请选择1~3个标签!');
       }else if(this.record.tags.length>2){
-        return alert('最多添加三个标签');
+        return alert('标签名太多啦,请重新选择');
       }
       if(this.record.amount === 0){
-        return alert('请输入金额!')
+        return alert('您还没有输入金额哦!')
       }
       this.$store.commit('createRecords',this.record);
       this.record.notes = '';

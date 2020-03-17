@@ -44,8 +44,8 @@
       return array;
     }
     getTagName(value: string){
-      if(value.length>10){
-        return alert("最多可输十个字");
+      if(value.length>6){
+        return alert("最多可输六个字");
       }
       this.myTag.name = value;
     }

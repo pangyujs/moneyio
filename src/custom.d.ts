@@ -5,6 +5,11 @@ type RecordItem = {
   type: string;
   createDate: string;
 }
+type Total = {
+  date: string;
+  total: number;
+}
+type RResult = {title: string; total: number;items: RecordItem[]}[];
 type RootState = {
   recordList: RecordItem[];
   createError: string;

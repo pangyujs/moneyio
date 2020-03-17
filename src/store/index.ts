@@ -20,7 +20,7 @@ const store = new Vuex.Store({
       const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
-      alert('记账成功!');
+      router.replace('/statistics');
     },
     saveRecords(state) {
       localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -29,32 +29,73 @@ const store = new Vuex.Store({
       state.currentTag = state.tagList.filter(item => item.id === id)[0];
     },
     fetchTags(state) {
-        state.tagList = JSON.parse(localStorage.getItem('tagList') || `
+      state.tagList = JSON.parse(localStorage.getItem('tagList') || `
             [
-              {"id": "e46mmdwgnf7",
-              "name": "购物",
-              "iconName": "shopping"},
-              {"id": "zu427xlf3h",
-              "name": "娱乐",
-              "iconName": "happy"},
-              {"id": "k2a3cxa9kvl",
+              {
+                "id": "e46mmdwgnf7",
+                "name": "购物",
+                "iconName": "shopping"
+              },
+              {
+                "id": "zu427xlf3h",
+                "name": "娱乐",
+                "iconName": "happy"
+              },
+              {
+              "id": "k2a3cxa9kvl",
               "name": "餐饮",
-              "iconName": "eat"},
-              {"id": "1bejsj3xh49",
+              "iconName": "eat"
+              },
+              {
+              "id": "1bejsj3xh49",
               "name": "通信",
-              "iconName": "phone"},
-              {"id": "ipshdvwgr3",
+              "iconName": "phone"
+              },
+              {
+              "id": "ipshdvwgr3",
               "name": "宠物",
-              "iconName": "pet"},
-              {"id": "nkrs864gck",
+              "iconName": "pet"
+              },
+              {
+              "id": "nkrs864gck",
               "name": "交通",
-              "iconName": "transportation"},
-              {"id": "gj26q6tsyaf",
+              "iconName": "transportation"
+              },
+              {
+              "id": "gj26q6tsyaf",
               "name": "学习",
-              "iconName": "study"},
-              {"id": "nxvirwsgdub",
+              "iconName": "study"
+              },
+              {
+              "id": "nxvirwsgdub",
               "name": "旅行",
-              "iconName": "travel"}
+              "iconName": "travel"
+              },
+              {
+              "id": "avhj7kh3enh",
+              "name": "投资",
+              "iconName": "financing"
+              },
+              {
+              "id": "u1gcfr6h8fn",
+              "name": "其他收入",
+              "iconName": "othercome"
+              },
+              {
+              "id": "plsvvup3xlf",
+              "name": "兼职",
+              "iconName": "parttimejob"
+              },
+              {
+              "id": "kidhyl5p9y",
+              "name": "工资",
+              "iconName": "salary"
+              },
+              {
+                "id": "71t6qxpji4",
+                "name": "转账",
+                "iconName": "transfer"
+              }
             ]
         `);
     },
@@ -87,18 +128,18 @@ const store = new Vuex.Store({
       }
     },
 
-    removeTag (state,id: string)  {
+    removeTag(state, id: string) {
       let index = -1;
-      for(let i=0;i<state.tagList.length;i++){
-        if(state.tagList[i].id===id){
-          index=i;
+      for (let i = 0; i < state.tagList.length; i++) {
+        if (state.tagList[i].id === id) {
+          index = i;
           break;
         }
       }
-      if(index===-1){
+      if (index === -1) {
         alert('刪除失敗!');
-      }else{
-        state.tagList.splice(index,1);
+      } else {
+        state.tagList.splice(index, 1);
         store.commit('saveTags');
         router.back();
       }
