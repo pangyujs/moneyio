@@ -21,7 +21,6 @@ const store = new Vuex.Store({
       const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
-      router.replace('/statistics');
     },
     saveRecords(state) {
       localStorage.setItem('recordList', JSON.stringify(state.recordList));
