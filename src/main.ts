@@ -9,12 +9,15 @@ import Icon from '@/components/Icon.vue';
 import Echart from 'echarts';
 Vue.prototype.$echarts = Echart;
 
+import message from 'ant-design-vue'
+import 'ant-design-vue/es/message/style/index.css';
+
 Vue.config.productionTip = false;
 Vue.component('Nav', Nav);
 Vue.component('Layout', Layout);
 Vue.component('Icon', Icon);
 
-
+Vue.use(message);
 
 new Vue({
   router,

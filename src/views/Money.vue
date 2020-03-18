@@ -1,3 +1,4 @@
+import message from "ant-design-vue";
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
@@ -38,12 +39,11 @@
 
     saveRecordList() {
       if(this.record.tags.length===0){
-        return alert('请选择1~3个标签!');
+        return this.$message.warning('请选择1~3个标签!',1);
       }else if(this.record.tags.length>2){
-        return alert('标签名太多啦,请重新选择');
-      }
-      if(this.record.amount === 0){
-        return alert('您还没有输入金额哦!')
+        return this.$message.warning('标签名太多啦,请重新选择',1);
+      }else if(this.record.amount === 0){
+        return this.$message.warning('您还没有输入金额哦!',1)
       }
       this.$store.commit('createRecords',this.record);
       this.record.notes = '';

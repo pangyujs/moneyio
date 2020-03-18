@@ -45,7 +45,7 @@
     }
     getTagName(value: string){
       if(value.length>6){
-        return alert("最多可输六个字");
+        return this.$message.warning("最多可输六个字",1);
       }
       this.myTag.name = value;
     }
@@ -62,7 +62,9 @@
 
     createTag() {
       if(this.myTag.name===''){
-        return alert('请输入标签名!');
+        return this.$message.warning('请输入标签名',1);
+      }else if(this.selectedTags.length===0){
+        return this.$message.warning('请选择一个标签',1);
       }
       this.myTag.iconName = this.selectedTags[0];
       this.$store.commit('createTag',this.myTag);
