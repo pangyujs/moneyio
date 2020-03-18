@@ -117,13 +117,9 @@ const store = new Vuex.Store({
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
-        console.log(name);
-        console.log(names);
         if (names.indexOf(name) >= 0) {
-          console.log('重复');
           return state.errorState = 'failed';
         }
-        console.log('不重复');
         state.errorState = 'none';
         const tag = state.tagList.filter(item => item.id === id)[0];
         tag.name = name;
