@@ -3,10 +3,10 @@
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
       <h3 class="title">编辑标签</h3>
-      <Icon class="rightIcon" name="success"/>
+      <Icon class="rightIcon" name="success" @click="updateTag"/>
     </div>
     <div class="form-wrapper">
-      <FormItem :value="currentTag.name" @update:value="updateTag" note-name="标签" placeholder="请输入标签" />
+      <label class="inputLabel">标签名:<input :value="this.currentTag.name" @input="getTagName($event.target.value)" type="text" placeholder="输入你想要的标签名"></label>
     </div>
     <div class="button-wrapper">
       <Button @click="removeTag">删除标签</Button>
@@ -25,9 +25,7 @@
     components: {Button, FormItem: FormItem, Icon},
   })
   export default class EditLabel extends Vue {
-    get currentTag(){
-      return this.$store.state.currentTag;
-    }
+    newLabelName: Tag = {id: '', name: '', iconName: ''};
     created() {
       const id = this.$route.params.id;
       this.$store.commit('fetchTags');
@@ -36,9 +34,34 @@
         this.$router.replace('/404');
       }
     }
-    updateTag(value: string){
-      if(this.currentTag){
-        this.$store.commit('updateTag',{id:this.currentTag.id,name:value});
+    get currentTag(){
+      return this.$store.state.currentTag;
+    }
+    get errorState(){
+      return this.$store.state.errorState;
+    }
+    getTagName(value: string){
+      if(value.length> 6){
+        return this.$message.warning("最多可输六个字",1);
+      }
+      this.newLabelName.name = value;
+    }
+
+    updateTag(){
+      this.newLabelName.id = this.currentTag.id;
+      this.newLabelName.iconName = this.currentTag.iconName;
+      if(this.newLabelName){
+        console.log(this.newLabelName);
+        if(this.newLabelName.name.length===0){
+          return;
+        }
+        this.$store.commit('updateTag',this.newLabelName);
+        console.log(this.errorState);
+        if(this.errorState === 'failed'){
+          return this.$message.warning('标签名重复了',1)
+        }
+        this.$router.back();
+
       }
     }
     removeTag(){
@@ -85,6 +108,18 @@
   .form-wrapper {
     background: #ffffff;
     margin-top: 8px;
+    > .inputLabel{
+      font-size: 15px;
+      min-height: 10vh;
+      display: flex;
+      align-items: center;
+      padding-left: 23px;
+      input{
+        background: transparent;
+        border: none;
+        padding: 10px 10px;
+      }
+    }
   }
 
   .button-wrapper {

@@ -12,7 +12,8 @@ type Total = {
 type RResult = {title: string; total: number;items: RecordItem[]}[];
 type RootState = {
   recordList: RecordItem[];
-  createError: string;
+  errorState: string;
+  successState: string;
   tagList: Tag[];
   currentTag?: Tag;
 }

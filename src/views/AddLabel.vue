@@ -26,12 +26,11 @@
   export default class Tags extends Vue {
     myTag: Tag ={id: '',name:'',iconName:''};
     selectedTags: string[] = [];
-    tagUnique: string[] = [];
     goBack(){
         this.$router.back();
     }
-    get createError(){
-      return this.$store.state.createError;
+    get errorState(){
+      return this.$store.state.errorState;
     }
     get tagList() {
       const list = this.$store.state.tagList;
@@ -68,8 +67,10 @@
       }
       this.myTag.iconName = this.selectedTags[0];
       this.$store.commit('createTag',this.myTag);
-      if(this.createError==='none'){
+      if(this.errorState==='none'){
         this.$router.back();
+      }else if(this.errorState==='failed'){
+        this.$message.error('标签名不能重复',1);
       }
     }
 
@@ -112,16 +113,16 @@
     flex-direction: column-reverse;
 
     > .inputLabel{
-      font-size: 15px;
-      min-height: 10vh;
-      display: flex;
-      align-items: center;
-      padding-left: 23px;
-       input{
-        background: transparent;
-        border: none;
-        padding: 10px 10px;
-      }
+          font-size: 15px;
+          min-height: 10vh;
+          display: flex;
+          align-items: center;
+          padding-left: 23px;
+          input{
+            background: transparent;
+            border: none;
+            padding: 10px 10px;
+          }
     }
     > .current {
       flex: 1;
