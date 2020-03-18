@@ -54,7 +54,6 @@
         return;
       }
       this.renderEchart();
-      console.log(this.totalList);
     }
 
     renderEchart() {
@@ -93,7 +92,6 @@
           }
         }
       }
-      console.log(this.privateTotalMonthItemsOut);
     }
 
     allNumber = '0000000000000000000000000000';

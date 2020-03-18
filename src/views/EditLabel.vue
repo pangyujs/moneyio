@@ -51,12 +51,10 @@
       this.newLabelName.id = this.currentTag.id;
       this.newLabelName.iconName = this.currentTag.iconName;
       if(this.newLabelName){
-        console.log(this.newLabelName);
         if(this.newLabelName.name.length===0){
           return;
         }
         this.$store.commit('updateTag',this.newLabelName);
-        console.log(this.errorState);
         if(this.errorState === 'failed'){
           return this.$message.warning('标签名重复了',1)
         }

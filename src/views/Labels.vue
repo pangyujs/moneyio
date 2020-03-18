@@ -30,7 +30,6 @@
     }
     created(){
       this.$store.commit('fetchTags');
-      console.log(this.tags);
     }
   }
 </script>
