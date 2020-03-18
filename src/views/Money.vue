@@ -39,7 +39,7 @@ import message from "ant-design-vue";
 
     saveRecordList() {
       if(this.record.tags.length===0){
-        return this.$message.warning('请选择1~3个标签!',1);
+        return this.$message.warning('请选择1~2个标签!',1);
       }else if(this.record.tags.length>2){
         return this.$message.warning('标签名太多啦,请重新选择',1);
       }else if(this.record.amount === 0){
