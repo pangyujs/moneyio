@@ -2,7 +2,7 @@ import message from "ant-design-vue";
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecordList"/>
-    <FormItem  :value.sync="record.notes" :dateValue.sync="record.createDate" placeholder="输入点什么吧" note-name="备注"/>
+    <FormItem :value.sync="record.notes" :dateValue.sync="record.createDate" placeholder="输入点什么吧" note-name="备注"/>
     <Tags @update:value="getTags"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
   </Layout>
@@ -19,18 +19,19 @@ import message from "ant-design-vue";
 
 
   @Component({
-    components: {Tabs, Tags,FormItem, NumberPad},
+    components: {Tabs, Tags, FormItem, NumberPad},
   })
   export default class Money extends Vue {
-    typeList= typeList;
+    typeList = typeList;
     record: RecordItem = {
       tags: [], notes: '', amount: 0, type: '-', createDate: ''
     };
-    created(){
+
+    created() {
       const now = new Date();
-      const day = ("0" + now.getDate()).slice(-2);
-      const month = ("0" + (now.getMonth() + 1)).slice(-2);
-      this.record.createDate = now.getFullYear() + "-" + (month) + "-" + (day);
+      const day = ('0' + now.getDate()).slice(-2);
+      const month = ('0' + (now.getMonth() + 1)).slice(-2);
+      this.record.createDate = now.getFullYear() + '-' + (month) + '-' + (day);
     }
 
     getTags(value: Tag[]) {
@@ -38,16 +39,16 @@ import message from "ant-design-vue";
     }
 
     saveRecordList() {
-      if(this.record.tags.length===0){
-        return this.$message.warning('请选择1~2个标签!',1);
-      }else if(this.record.tags.length>2){
-        return this.$message.warning('标签名太多啦,请重新选择',1);
-      }else if(this.record.amount === 0){
-        return this.$message.warning('您还没有输入金额哦!',1)
+      if (this.record.tags.length === 0) {
+        return this.$message.warning('请选择1~2个标签!', 1);
+      } else if (this.record.tags.length > 2) {
+        return this.$message.warning('标签名太多啦,请重新选择', 1);
+      } else if (this.record.amount === 0) {
+        return this.$message.warning('您还没有输入金额哦!', 1);
       }
-      this.$store.commit('createRecords',this.record);
+      this.$store.commit('createRecords', this.record);
       this.record.notes = '';
-        this.$message.success('添加成功',1);
+      this.$message.success('添加成功', 1);
     }
   }
 </script>

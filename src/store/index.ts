@@ -14,6 +14,9 @@ const store = new Vuex.Store({
     currentTag: undefined
   } as RootState,
   mutations: {
+    changeSuccessState(state){
+      state.successState = 'none'
+    },
     fetchRecords(state) {
       state.recordList = JSON.parse(localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
@@ -21,6 +24,7 @@ const store = new Vuex.Store({
       const deepRecord: RecordItem = clone(record);// 对record 进行深拷贝
       state.recordList.push(deepRecord);
       store.commit('saveRecords');
+      state.successState = 'success'
     },
     saveRecords(state) {
       localStorage.setItem('recordList', JSON.stringify(state.recordList));
