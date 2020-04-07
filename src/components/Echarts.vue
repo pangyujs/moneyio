@@ -19,14 +19,13 @@
 
     @Watch('totalList')
     onTotalListChanged() {
-      if(this.totalList.length===0){
+      if (this.totalList.length === 0) {
         return;
       }
       this.renderEchart();
       const ele = document.getElementById('myEcharts');
       const chart: any = this.$echarts.init(ele);
       chart.setOption(this.options, true, false);
-
     }
 
     created() {
@@ -34,6 +33,7 @@
       const now = new Date();
       const month = (now.getMonth() + 1).toString();
       if ('13578'.indexOf(month) >= 0 || month === '10' || month === '12') {
+        console.log('3月');
         this.monthValue.push('29', '30', '31');
         this.allNumber = '0000000000000000000000000000000';
         for (let i = 0; i < this.allNumber.length; i++) {
@@ -42,15 +42,15 @@
       } else if ('469'.indexOf(month) >= 0 || month === '11') {
         this.monthValue.push('29', '30');
         this.allNumber = '000000000000000000000000000000';
-        for (let i = 0; this.allNumber; i++) {
+        for (let i = 0; i < this.allNumber.length; i++) {
           this.privateTotalMonthItemsOut.push(0);
         }
       } else {
-        for (let i = 0; this.allNumber; i++) {
+        for (let i = 0; i < this.allNumber.length; i++) {
           this.privateTotalMonthItemsOut.push(0);
         }
       }
-      if(this.totalList.length===0){
+      if (this.totalList.length === 0) {
         return;
       }
       this.renderEchart();
@@ -60,8 +60,8 @@
       const now = new Date();
       const month = (now.getMonth() + 1).toString();
       if (this.totalList[0].items[0].type === '-') {
-        for(let i = 0;i<this.privateTotalMonthItemsOut.length;i++){
-          if(this.privateTotalMonthItemsOut[i] !== 0){
+        for (let i = 0; i < this.privateTotalMonthItemsOut.length; i++) {
+          if (this.privateTotalMonthItemsOut[i] !== 0) {
             this.privateTotalMonthItemsOut[i] = 0;
           }
         }
@@ -72,12 +72,12 @@
           if (outMonth === month) {
             let outDay = title.split('-')[2];
             outDay = outDay.indexOf('0') === 0 ? outDay.slice(-1) : outDay;
-            this.privateTotalMonthItemsOut[(parseInt(outDay)-1)] = this.totalList[i].total;
+            this.privateTotalMonthItemsOut[(parseInt(outDay) - 1)] = this.totalList[i].total;
           }
         }
-      }else if( this.totalList[0].items[0].type === '+' ){
-        for(let i = 0;i<this.privateTotalMonthItemsOut.length;i++){
-          if(this.privateTotalMonthItemsOut[i] !== 0){
+      } else if (this.totalList[0].items[0].type === '+') {
+        for (let i = 0; i < this.privateTotalMonthItemsOut.length; i++) {
+          if (this.privateTotalMonthItemsOut[i] !== 0) {
             this.privateTotalMonthItemsOut[i] = 0;
           }
         }
@@ -88,7 +88,7 @@
           if (outMonth === month) {
             let outDay = title.split('-')[2];
             outDay = outDay.indexOf('0') === 0 ? outDay.slice(-1) : outDay;
-            this.privateTotalMonthItemsOut[(parseInt(outDay)-1)] = this.totalList[i].total;
+            this.privateTotalMonthItemsOut[(parseInt(outDay) - 1)] = this.totalList[i].total;
           }
         }
       }
@@ -140,7 +140,7 @@
             }
           },
 
-          name: '搜索引擎',
+          name: '月份',
           type: 'line',
           stack: '总量',
           // 径向渐变，前三个参数分别是圆心 x, y 和半径，取值同线性渐变

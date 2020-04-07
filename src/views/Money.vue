@@ -47,7 +47,7 @@ import message from "ant-design-vue";
       }
       this.$store.commit('createRecords',this.record);
       this.record.notes = '';
-      this.$message.success('添加成功',1);
+        this.$message.success('添加成功',1);
     }
   }
 </script>

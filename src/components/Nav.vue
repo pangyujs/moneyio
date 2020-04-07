@@ -8,8 +8,8 @@
             <Icon name="money"/>
             记账
         </router-link>
-        <router-link class="item" active-class="selected" to="/statistics">
-            <Icon name="statistics"/>
+        <router-link @click="console.log('dd')" class="item" active-class="selected" to="/statistics">
+            <Icon name="statistics" />
             统计
         </router-link>
     </nav>

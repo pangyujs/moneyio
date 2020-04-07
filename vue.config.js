@@ -6,7 +6,7 @@ module.exports = {
     : '/',
   lintOnSave: false,
   chainWebpack: config => {
-    const dir = path.resolve(__dirname, 'src/assets/icons')
+    const dir = path.resolve(__dirname, 'src/assets/icons');
 
     config.module
       .rule('svg-sprite')
