@@ -73,12 +73,10 @@
     ok() {
       this.$emit('update:value', parseFloat(this.output));
       this.$emit('submit', parseFloat(this.output));
-      console.log(this.successState);
       if (this.successState === 'success') {
         this.output = '0';
       }
       this.$store.commit('changeSuccessState');
-      console.log(this.successState);
     }
 
   }
